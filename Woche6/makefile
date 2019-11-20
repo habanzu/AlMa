@@ -1,2 +1,2 @@
-1a: 1a.cpp
-	g++ -O3 -std=c++11 1a.cpp;./a.out
+1c: 1c.cpp
+	g++ -O3 -std=c++11 1c.cpp;./a.out
