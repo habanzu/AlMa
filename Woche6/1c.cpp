@@ -21,6 +21,7 @@ unsigned long fibIterative(const unsigned long n){
     unsigned long fib_n = 0;
     unsigned long fib_n_minus_2 = 1;
     unsigned long fib_n_minus_1 = 1;
+
     for(unsigned i = 2; i <= n; ++i){
         fib_n = fib_n_minus_1 + fib_n_minus_2;
         fib_n_minus_2 = fib_n_minus_1;
@@ -47,7 +48,7 @@ unsigned measureTime(unsigned n, unsigned long func (unsigned long)){
 int main(){
     vector<unsigned> recursive;
     vector<unsigned> iterative;
-    const unsigned n = 40;
+    const unsigned n = 20;
 
     std::ofstream ofile("output.csv");
 
