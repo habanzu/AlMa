@@ -1,0 +1,49 @@
+
+//	ein paar kleine Hilfestellungen zur ProgAufg 8
+
+a) Koordinaten einlesen:
+	wenn ihr die Graphenklasse mit der x und y Koordinate ergänzen wollt,
+	schaut euch an wie die _edge_weight in der Neighbor-Klasse realisiert worden ist.
+
+b) Bild erstellen/beschreiben:
+		#include "drawline.h"
+		und mit drawline.cpp verfahrt ihr wie letztes Mal mit graph.cpp
+		
+		// bild initialisieren
+		ofstream pgm("mensa.pgm", std::ios::app);
+		// dateikopf in datei schreiben (Bsp-Funktion in pgm.cpp)
+		writePGMHeader(pgm, width, height);
+		// alle Kanten zeichnen mit drawline
+		TODO: array mit width*height-Stellen initialisieren
+		TODO: Über alle Kanten laufen (überlgen wie das geht) und mithilfe der drawline Funktion alle Kanten zeichnen.
+		// bild mit array beschreiben (Bsp-Funktion in pgm.cpp)
+		writeArrayToImage(pgm, array, width, height);
+		
+		wenn das array so aussieht [ 1,2,3, 4,5,6, 7,8,9 ], dann sieht das bild so aus:
+		
+			7 8 9
+			4 5 6
+			1 2 3
+			
+		(zumindest impliziert das die drawline-Funktion - könnt das Ganze von mir aus auch gerne spiegeln sd der Ursprung oben links statt unten links ist...)
+
+c) kürzesten Weg berechnen:
+		versucht den Pseudo-Algo aus der Vorlesung 1:1 zu implementieren
+		
+		den kürzesten Weg in einem eigenen Graphen abzuspeichern hat den vorteil
+		die selbstgeschriebene Funktion aus b) wieder zu ververwenden und
+		einfach über das Bild aus b) 'drüber malen' zu können. Das braucht ihr dafür:
+		
+		// 'Distanz' ist als Kantengewwicht eingetragen
+		// wenn ihr mit dem loop von Blatt 7 for(auto neighbor : graph.get_node(cur_nodeid).adjacent_nodes())
+		// arbeitet dann bekommt ihr das gewicht zwischen Knoten cur_nodeid und dem Nachbar mit
+		double edge_weight = neighbor.edge_weight();
+		// Graph initialisieren mit entsprechend num_nodes() vielen Knoten
+		Graph shortest_path(graph.num_nodes(), Graph::undirected);
+		// eine Kante hinzufügen geht so:
+		shortest_path.add_edge(cur_nodeid, neighbor.id());
+
+d) die Anwewndung von c)
+		
+	
+		
