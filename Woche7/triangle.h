@@ -3,8 +3,8 @@
 
 class Triangle {
     public:
-        Triangle(char const* filename);
+        Triangle(char const* filename, unsigned size);
 
-        const unsigned int size;
-        std::vector<std::vector<unsigned>> data;
+        unsigned int size;
+        std::vector<std::vector<unsigned> > data;
 };
