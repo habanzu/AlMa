@@ -17,7 +17,7 @@ public:
     };
 
     // Vektor, der alle Punkte mit ihren Koordinaten enthält
-    std::vector<Point> Coordinate;
+    std::vector<Point> Coordinates;
 
     //Vektor, der die NodeIds des kürzesten Pfades enthält
     std::vector<NodeId> shortestPath;
