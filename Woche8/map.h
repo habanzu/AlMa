@@ -19,6 +19,11 @@ public:
     // Vektor, der alle Punkte mit ihren Koordinaten enthält
     std::vector<Point> Coordinates;
 
-    //Vektor, der die NodeIds des kürzesten Pfades enthält
-    std::vector<NodeId> shortestPath;
+    //Gibt einen Vektor zurück, der die NodeIds des kürzesten Pfades enthält
+    std::vector<NodeId> shortestPath();
+private:
+    struct DjikstraNode{
+        
+    }
+
 };
