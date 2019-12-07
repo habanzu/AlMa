@@ -5,6 +5,9 @@
 #include <vector>
 #include <set>
 
+using std::cout;
+using std::endl;
+
 std::vector<NodeId> Map::shortestPath(NodeId start){
     std::vector<NodeId> path;
 
@@ -12,10 +15,30 @@ std::vector<NodeId> Map::shortestPath(NodeId start){
     std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> R;
     std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> Q;
 
-    //Q.insert(DjikstraNode{start, 0, -1});
-    while(not Q.empty()){
-
+    Q.insert(DjikstraNode{start, 0, -1});
+    //while(not Q.empty()){
+    DjikstraNode v = *(Q.begin());
+    R.insert(v);
+    auto node = this->get_node(v.nodeid);
+    auto neighbors = node.adjacent_nodes();
+    for(auto e : neighbors){
+        if(R.find(DjikstraNode{e.id(),0,0}) != R.end())
+            continue;
+        auto w = Q.find(DjikstraNode{e.id(),0,0});
+        //cout << neighbor.id() << endl;
+        if(w == Q.end()
+            || v.l + e.edge_weight() < w->l){
+                auto DjikstraNode_of_w = DjikstraNode{e.id(), v.l + e.edge_weight(), v.nodeid};
+                Q.insert(DjikstraNode_of_w);
+                cout << "Achtung, noch ist die vorherige Zeile kaputt" << endl;
+            }
+        std::cout << "geschafft" << std::endl;
     }
+
+    //}
+
+
+    std::cout << v.nodeid << std::endl;
 
     return path;
 };
