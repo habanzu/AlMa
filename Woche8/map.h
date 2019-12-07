@@ -20,13 +20,13 @@ public:
     std::vector<Point> Coordinates;
 
     //Gibt einen Vektor zurück, der die NodeIds des kürzesten Pfades enthält
-    std::vector<NodeId> shortestPath(NodeId start);
+    std::vector<NodeId> shortestPath(NodeId start, NodeId destination);
 private:
     // Die Private Datenstrukturen brauche ich intern, die am bestein einfach nicht verwenden
     struct DjikstraNode{
         NodeId nodeid;
-        double l;
-        NodeId p;
+        mutable double l;
+        mutable NodeId p;
 
         // Zum verlgeichen von DjikstraNode brauche ich einen Funktor, den ich an das Set übergebe
         // Haesslicher technischer Boilerplate Code -.-

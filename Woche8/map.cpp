@@ -8,37 +8,58 @@
 using std::cout;
 using std::endl;
 
-std::vector<NodeId> Map::shortestPath(NodeId start){
-    std::vector<NodeId> path;
-
+std::vector<NodeId> Map::shortestPath(NodeId start, NodeId destination){
     // Notation wie im Buch von Hougardy
     std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> R;
     std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> Q;
 
     Q.insert(DjikstraNode{start, 0, -1});
-    //while(not Q.empty()){
-    DjikstraNode v = *(Q.begin());
-    R.insert(v);
-    auto node = this->get_node(v.nodeid);
-    auto neighbors = node.adjacent_nodes();
-    for(auto e : neighbors){
-        if(R.find(DjikstraNode{e.id(),0,0}) != R.end())
-            continue;
-        auto w = Q.find(DjikstraNode{e.id(),0,0});
-        //cout << neighbor.id() << endl;
-        if(w == Q.end()
-            || v.l + e.edge_weight() < w->l){
-                auto DjikstraNode_of_w = DjikstraNode{e.id(), v.l + e.edge_weight(), v.nodeid};
-                Q.insert(DjikstraNode_of_w);
-                cout << "Achtung, noch ist die vorherige Zeile kaputt" << endl;
+    while(not Q.empty()){
+        DjikstraNode v = *(Q.begin());
+        Q.erase(v);
+        R.insert(v);
+        auto node = this->get_node(v.nodeid);
+        auto neighbors = node.adjacent_nodes();
+        for(auto e : neighbors){
+            if(R.find(DjikstraNode{e.id(),0,0}) != R.end())
+                continue;
+            auto w = Q.find(DjikstraNode{e.id(),0,0});
+
+            if(w == Q.end()){
+                Q.insert(DjikstraNode{e.id(), v.l + e.edge_weight(), v.nodeid});
+                //cout << "Erstellt" << endl;
+
+                w = Q.find(DjikstraNode{e.id(),0,0});
+                //cout << w->l << endl;
+            } else {
+                if (v.l + e.edge_weight() < w->l){
+                    w->l = v.l + e.edge_weight();
+                    w->p = v.nodeid;
+                    //cout << "V.id: "<< w->nodeid << " V.p: " << w->p << endl;
+
+                    //cout << "Modifiziert" << endl;
+                    }
+                    else{
+                        //cout << "Nicht Modifiziert" << endl;
+                    }
             }
-        std::cout << "geschafft" << std::endl;
+        }
+
     }
 
-    //}
+    cout << "Der Algorithmus ist noch nicht korrekt, bei der Wahl von Q ist l(v) noch nicht minimal" << endl;
 
+    // Erstelle den Ausgabepfad nach der Terminierung von Djikstra
+    auto v = *R.find(DjikstraNode{destination, 0, 0});
+    std::vector<NodeId> path;
 
-    std::cout << v.nodeid << std::endl;
+    //cout << "Vor der while schleife" << endl;
+    while(v.p != -1){
+        //cout << "V.id: "<< v.nodeid << "V.p: " << v.p << endl;
+        path.insert(path.begin(), v.nodeid);
+        v = *R.find(DjikstraNode{v.p, 0, 0});
+    }
+    path.insert(path.begin(), start);
 
     return path;
 };
