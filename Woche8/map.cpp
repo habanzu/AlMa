@@ -5,9 +5,17 @@
 #include <vector>
 #include <set>
 
-std::vector<NodeId> Map::shortestPath(){
+std::vector<NodeId> Map::shortestPath(NodeId start){
     std::vector<NodeId> path;
 
+    // Notation wie im Buch von Hougardy
+    std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> R;
+    std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> Q;
+
+    //Q.insert(DjikstraNode{start, 0, -1});
+    while(not Q.empty()){
+
+    }
 
     return path;
 };
