@@ -36,8 +36,10 @@ private:
             }
         };
 
+        static bool cmpLength(const DjikstraNode &a, const DjikstraNode &b){
+            return a.l < b.l;
+        };
+
     };
-
-
 
 };
