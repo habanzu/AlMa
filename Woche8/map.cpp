@@ -14,7 +14,7 @@ std::vector<NodeId> Map::shortestPath(NodeId start, NodeId destination){
     std::set<DjikstraNode, DjikstraNode::CompareDjikstraNode> Q;
 
     Q.insert(DjikstraNode{start, 0, -1});
-    while(not Q.empty()){
+    while(!Q.empty()){
         DjikstraNode v = *(std::min_element(Q.begin(),Q.end(), DjikstraNode::cmpLength));
         Q.erase(v);
         R.insert(v);
