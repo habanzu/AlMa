@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 #include <vector>
-
+#include <iostream>
 
 
 void draw_line(const double px1, const double py1, const double px2, const double py2, const double thickness, const uint8_t color, std::vector<uint8_t> image, const unsigned int WIDTH, const unsigned int HEIGHT) {
@@ -227,7 +227,9 @@ void draw_line(const double px1, const double py1, const double px2, const doubl
 
             int index;
             switch_xy ? index = (HEIGHT - a) * WIDTH + b : index = (HEIGHT - b) * WIDTH + a;
-			image[index] = (uint8_t)round(fmin(255.0, (1 - alpha)*image[index] + alpha*color));
+			
+
+            image[index] = (int) ((uint8_t)round(fmin(255.0, (1 - alpha)*image[index] + alpha*color)));
 		}
 	}
 }
