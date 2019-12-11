@@ -42,7 +42,4 @@ int main()
 
     createPGM(my_width, my_height, image);
 
-
-
-
 }
