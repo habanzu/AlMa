@@ -1,9 +1,12 @@
 #include "map.h"
+#include "drawline.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <set>
 #include <algorithm>
+
+#include <iostream>
 
 using std::cout;
 using std::endl;
@@ -46,7 +49,51 @@ std::vector<NodeId> Map::shortestPath(NodeId start, NodeId destination){
     }
     path.insert(path.begin(), start);
     return path;
-};
+}
+
+std::vector<uint8_t>  Map::draw_map(unsigned int size)
+{
+    //coordinates between 0 and 2
+    //quadratic image
+    std::vector<uint8_t> image(size*size);
+
+    for(int i = 0; i < image.size(); i++) { //makes the background white
+        image.at(i) = 255;
+    }
+
+    for(int i = 0; i < num_nodes(); i++) {
+        for(int ii = 0; ii < i; ii++) {
+            for(auto n : get_node(i).adjacent_nodes()) {
+
+                if(n.id() == ii) {
+
+                    Map::draw_edge(Coordinates.at(i), Coordinates.at(ii), size/1000.0, 100, image, size);
+                }
+            }
+        }
+    }
+
+    return image;
+}
+
+
+void Map::draw_path(std::vector<uint8_t> image, std::vector<NodeId> path, unsigned int size) {
+    int i = 1;
+    while(i < path.size()) {
+        Map::draw_edge(Coordinates.at(path.at(i-1)), Coordinates.at(path.at(i)), (size/1000.0)*3, 0, image, size);
+        i++;
+    }
+
+}
+
+
+void Map::draw_edge(Map::Point point1, Map::Point point2, double thickness, uint8_t color, std::vector<uint8_t> image, unsigned int size)
+{
+    //std::cout << point1.x*size/2 << " " << point1.y*size/2 << " " << point2.x*size/2 << " " << point2.y*size/2 << " " << thickness << " " << (int)color << std::endl;
+    draw_line(point1.x*size/2, point1.y*size/2, point2.x*size/2, point2.y*size/2, thickness, color, &(image[0]), size, size);
+    std::cout << ".";
+}
+
 
 Map::Map(char const* fileGraph, char const* fileXCoords, char const* fileYCoords) : Graph(fileGraph, Graph::undirected){
 
