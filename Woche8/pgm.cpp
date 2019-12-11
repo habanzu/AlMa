@@ -20,12 +20,12 @@ void writePGMHeader(std::ofstream& pgm, const unsigned int WIDTH, const unsigned
 void writeArrayToImage(std::ofstream& pgm, vector<uint8_t> image, const unsigned int WIDTH, const unsigned int HEIGHT)
 {
 
-	for(unsigned int i = 0; i < HEIGHT; i++){
+	for(unsigned int i = HEIGHT/4; i < HEIGHT; i++){
 
-		unsigned int line_index = (HEIGHT-1 - i)*WIDTH; // Start-Index der i-ten Zeile des Bildes
+		unsigned int line_index = (i)*WIDTH; // Start-Index der i-ten Zeile des Bildes
 		for(unsigned int j = 0; j < WIDTH; j++){
 			pgm << (int) image.at(line_index + j) << " ";
-			
+
 		}
 		pgm << "\n";
 	}
@@ -33,7 +33,7 @@ void writeArrayToImage(std::ofstream& pgm, vector<uint8_t> image, const unsigned
 
 int createPGM(unsigned int width, unsigned int height, vector<uint8_t> img) {
 	// initialisiere output stream
-	ofstream pgm("test.pgm", std::ios::app);
+	ofstream pgm("test.pgm");
 	// dateikopf in datei schreiben (Bsp-Funktion siehe unten)
 	writePGMHeader(pgm, width, height);
 
