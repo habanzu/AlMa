@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 int main()
 {
     Map map("Graph8.txt", "xcoords.txt", "ycoords.txt");

@@ -25,7 +25,7 @@ public:
     //Erstellt ein Bild der Karte in Form eines Vektors, der mit createPGM in eine PGM Datei geschrieben werden kann
     std::vector<uint8_t> draw_map(unsigned int size);
 
-    //zeichnet einen Weg auf dere Karte
+    //zeichnet einen Weg auf der Karte
     void draw_path(std::vector<uint8_t> image, std::vector<NodeId> path, unsigned int size);
 
     //zeichnet eine Kante auf der Karte

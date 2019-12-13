@@ -91,7 +91,6 @@ void Map::draw_edge(Map::Point point1, Map::Point point2, double thickness, uint
 {
     //std::cout << point1.x*size/2 << " " << point1.y*size/2 << " " << point2.x*size/2 << " " << point2.y*size/2 << " " << thickness << " " << (int)color << std::endl;
     draw_line(point1.x*size/2, point1.y*size/2, point2.x*size/2, point2.y*size/2, thickness, color, &(image[0]), size, size);
-    std::cout << ".";
 }
 
 
