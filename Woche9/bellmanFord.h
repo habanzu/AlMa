@@ -8,4 +8,3 @@ using std::vector;
 using std::queue;
 
 Graph bellmanFord(Graph graph, Graph::NodeId start);
-vector<Graph::Neighbor> bfsEdges(Graph graph, NodeId id);

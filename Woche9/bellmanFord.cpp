@@ -2,12 +2,12 @@
 
 
 Graph bellmanFord(const Graph graph, const NodeId start){
-
-    std::vector<double> l;
-    std::vector<NodeId> p;
-
-
     const NodeId n = graph.num_nodes();
+
+    std::vector<double> l(n, std::numeric_limits<double>::infinity());
+    std::vector<NodeId> p(n, -1);
+
+
 
 
     Graph A = Graph(n,Graph::directed);
@@ -15,33 +15,22 @@ Graph bellmanFord(const Graph graph, const NodeId start){
     p[start] = Graph::invalid_node;
 
     for (unsigned i = 1; i < n; ++i){
-        for (auto e : bfsEdges(graph, start)){
-            
+        for (unsigned j = 0; j < n; ++j){
+            for( auto e: graph.get_node(j).adjacent_nodes()){
+                if (l[j] + e.edge_weight() < l[e.id()]){
+                    l[e.id()] = l[j] + e.edge_weight();
+                    p[e.id()] = j;
+                }
+            }
+        }
+    }
+
+    for (unsigned i = 0; i < n; ++i){
+        if (i != start){
+            if (p[i] == -1) continue;
+            A.add_edge(p[i], i, l[i] - l[p[i]]);
         }
     }
 
     return(A);
-}
-
-vector<Neighbor> bfsEdges(Graph graph, NodeId id){
-    vector<NodeId> visited;
-    queue<NodeId> unvisited;
-    vector<Neighbor> neighbors;
-    vector<Neighbor> tmp;
-    unvisited.push(id);
-
-    while(unvisited.empty() == 0){
-        id = unvisited.front();
-        visited.push_back(id);
-        unvisited.pop();
-        tmp = graph.get_node(id).adjacent_nodes();
-        for(auto neighbor : tmp){
-            neighbors.push_back(neighbor);
-            id = neighbor.id();
-            if(!(std::find(visited.begin(), visited.end(), id) != visited.end()))
-                unvisited.push(id);
-        }
-    }
-
-    return neighbors;
 }
