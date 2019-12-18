@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-
+#include <set>
 #include <vector>
 #include <algorithm>
 #include "../Woche7/graph.h"
@@ -8,14 +8,15 @@
 using namespace std;
 typedef Graph::NodeId NodeId;
 
-void findConnection(Graph & graph, vector<NodeId> & connection, NodeId start, NodeId end) //modified dfs
+//modified dfs to return a path from start to end or an empty vector
+vector<NodeId> findConnection(Graph & graph, NodeId start, NodeId end) 
 {
-    vector<NodeId> visited;
-    //vector<NodeId> connection; //use it like a stack
+    set<NodeId> visited;
+    vector<NodeId> connection; //use it like a stack
     connection.push_back(start);
-    visited.push_back(start);
+    visited.insert(start);
     NodeId current_node;
-    while(! connection.empty()){
+    while(connection.size() > 0) {
         current_node = connection.back();
         
         NodeId id;
@@ -23,16 +24,18 @@ void findConnection(Graph & graph, vector<NodeId> & connection, NodeId start, No
             id = neighbor.id();
             if(id == end) {
                 connection.push_back(id);
-                return;
-            } else if(find(visited.begin(), visited.end(), id) == visited.end()) {
+                return connection;
+            } else if(visited.find(id) == visited.end()) {
                 connection.push_back(id);
-                visited.push_back(id);
-
-            } else {
-                connection.pop_back();
+                visited.insert(id);
             }
         }
+        if(current_node == connection.back()) {
+            connection.pop_back();
+        }
+
     }
+    return connection;
 }
 
 void addMoreEdges(Graph & g, char const* filename) {
@@ -57,22 +60,19 @@ void testForContradiction(Graph & g, char const* filename) {
         f >> n1; //get the first line out of the way
         vector<NodeId> connection; 
         while(f >> n1 && f >> n2) {
-            connection.clear();
-            findConnection(g, connection, n1, n2);
-            if(! connection.empty()) {
+            connection = findConnection(g, n1, n2);
+            if(connection.empty()) { 
+            }
+            else {
 
                 cout << "Das haut so aber nicht hin!" << endl
                 << "Es gilt: " << connection.at(0);
                 for(int i = 1; i < connection.size(); i++) {
                     cout << " = " << connection.at(i);
                 }
-                cout << " ," << endl << "aber auch: " << n1 << " != " << n2 << endl; 
-                f.close();
-                return;               
+                cout << "," << endl << "aber auch: " << n1 << " != " << n2 << endl; 
             }
         }
-
-        cout << "Keine Widersprüche gefunden." << endl;
         f.close();
     } else {
         cout << "Could not open file." << endl;
@@ -83,7 +83,8 @@ int main()
 {   
     Graph equality(100, Graph::undirected);
     addMoreEdges(equality, "gleichungen.txt");
-    vector<NodeId> connection;
-    findConnection(equality, connection, 1, 10);
-    //testForContradiction(equality, "ungleichungen.txt");
+    testForContradiction(equality, "ungleichungen.txt");
+
+    
+
 }
