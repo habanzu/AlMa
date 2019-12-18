@@ -9,3 +9,4 @@ using std::queue;
 
 Graph bellmanFord(Graph graph, NodeId start);
 int circleCheck(vector<NodeId>, NodeId start, NodeId root);
+void printCircle(const vector<NodeId> p, const NodeId end);

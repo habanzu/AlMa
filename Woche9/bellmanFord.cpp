@@ -1,4 +1,8 @@
 #include "bellmanFord.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 
 Graph bellmanFord(const Graph graph, const NodeId start){
@@ -22,6 +26,7 @@ Graph bellmanFord(const Graph graph, const NodeId start){
                     p[e.id()] = j;
                     if(circleCheck(p, e.id(), start)){
                         std::cout << "Der Graph enthält einen Kreis mit negativen Kanten" << std::endl;
+                        printCircle(p, e.id());
                         return Graph(0, Graph::directed);
                     }
                 }
@@ -46,4 +51,14 @@ int circleCheck(const vector<NodeId> p, const NodeId end, const NodeId root){
         if (x == end) return 1;
     }
     return 0;
+}
+
+void printCircle(const vector<NodeId> p, const NodeId end){
+    cout << "Der Kreis enthält die Knoten: " << end;
+    auto x = p[end];
+    while(x != end){
+        cout << ", " << x;
+        x = p[x];
+    }
+    cout << endl;
 }
