@@ -20,6 +20,10 @@ Graph bellmanFord(const Graph graph, const NodeId start){
                 if (l[j] + e.edge_weight() < l[e.id()]){
                     l[e.id()] = l[j] + e.edge_weight();
                     p[e.id()] = j;
+                    if(circleCheck(p,start, e.id())){
+                        std::cout << "Der Graph enthält einen Kreis mit negativen Kanten" << std::endl;
+                        return Graph(0, Graph::directed);
+                    }
                 }
             }
         }
@@ -33,4 +37,8 @@ Graph bellmanFord(const Graph graph, const NodeId start){
     }
 
     return(A);
+}
+
+int circleCheck(const vector<NodeId>, const NodeId start, const NodeId root){
+    return 0;
 }

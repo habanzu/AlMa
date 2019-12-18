@@ -7,4 +7,5 @@ typedef Graph::Neighbor Neighbor;
 using std::vector;
 using std::queue;
 
-Graph bellmanFord(Graph graph, Graph::NodeId start);
+Graph bellmanFord(Graph graph, NodeId start);
+int circleCheck(vector<NodeId>, NodeId start, NodeId root);
