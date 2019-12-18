@@ -11,9 +11,6 @@ Graph bellmanFord(const Graph graph, const NodeId start){
     std::vector<double> l(n, std::numeric_limits<double>::infinity());
     std::vector<NodeId> p(n, -1);
 
-
-
-
     Graph A = Graph(n,Graph::directed);
     l[start] = 0;
     p[start] = Graph::invalid_node;
