@@ -7,7 +7,6 @@ Graph transformGraphToLog(const Graph graph);
 int main(){
     Graph graph("waren.txt", Graph::directed);
     Graph tree = bellmanFord(transformGraphToLog(graph), 1);
-    //tree.print();
     return 0;
 }
 
@@ -16,7 +15,7 @@ Graph transformGraphToLog(const Graph graph){
     Graph A(n, Graph::directed);
     for(unsigned i = 0; i < n; ++i){
         for(auto e : graph.get_node(i).adjacent_nodes()){
-            A.add_edge(i, e.id(), std::log(e.edge_weight()));
+            A.add_edge(i, e.id(), (-1) *std::log(e.edge_weight()));
         }
     }
     return A;
