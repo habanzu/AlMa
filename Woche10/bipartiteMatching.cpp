@@ -98,5 +98,6 @@ vector<NodeId> bipartiteMatching(Graph graph){
             }
             X[path[i]] = 0;
         }
+        X[path[path.size() - 2]] = 0;
     }
 }

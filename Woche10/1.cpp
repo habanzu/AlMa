@@ -2,6 +2,7 @@
 #include <iostream>
 
 int main(){
+    //Graph graph("simpleGraph.txt", Graph::undirected);
     Graph graph("tutorien.txt", Graph::undirected);
     vector<NodeId> matching = bipartiteMatching(graph);
     for(int i = 0; i < 100; i++){
