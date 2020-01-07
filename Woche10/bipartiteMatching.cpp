@@ -68,13 +68,6 @@ std::vector<NodeId> shortestPath(Graph graph, NodeId start, NodeId destination){
     return path;
 };
 
-struct SearchNode{
-    NodeId id;
-    int operator() (Neighbor neighbor){
-        return neighbor.id() == this->id;
-    }
-};
-
 Graph bipartiteMatching(Graph graph){
     NodeId nodes = graph.num_nodes();
     NodeId bipartition = 3;
@@ -90,7 +83,9 @@ Graph bipartiteMatching(Graph graph){
         for(NodeId i = 0; i < bipartition; ++i){
             for(Neighbor node : graph.get_node(i).adjacent_nodes()){
                 vector<Neighbor> neighbors = M.get_node(i).adjacent_nodes();
-                if(std::any_of(neighbors.begin(), neighbors.end(), SearchNode{node.id()})){
+                if(std::any_of(neighbors.begin(), neighbors.end(), [node] (Neighbor neighbor) {
+                    return neighbor.id() == node.id();
+                })){
                     H.add_edge(node.id(), i);
                 } else {
                     H.add_edge(i, node.id());
