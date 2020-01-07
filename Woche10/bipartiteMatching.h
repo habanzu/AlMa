@@ -2,7 +2,8 @@
 #include <vector>
 
 typedef Graph::NodeId NodeId;
+using std::vector;
 
 // It's required, that the first 100 nodes are one bipartition.
-Graph bipartiteMatching(Graph graph);
-std::vector<NodeId> shortestPath(Graph graph, NodeId start, NodeId destination);
+vector<NodeId> bipartiteMatching(Graph graph);
+vector<NodeId> shortestPath(Graph graph, NodeId start, NodeId destination);

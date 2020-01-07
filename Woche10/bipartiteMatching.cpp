@@ -5,7 +5,6 @@
 #include <numeric>
 
 typedef Graph::Neighbor Neighbor;
-using std::vector;
 
 struct DjikstraNode{
     NodeId nodeid;
@@ -69,22 +68,20 @@ std::vector<NodeId> shortestPath(Graph graph, NodeId start, NodeId destination){
     return path;
 };
 
-Graph bipartiteMatching(Graph graph){
-    NodeId nodes = graph.num_nodes(), bipartition = 3;
-    Graph M = Graph(nodes, Graph::undirected), H = Graph(nodes + 2, Graph::directed);
+vector<NodeId> bipartiteMatching(Graph graph){
+    NodeId nodes = graph.num_nodes(), bipartition = 100;
+    vector<NodeId> M(bipartition, -1);
     NodeId s = nodes, t = nodes + 1;
-    vector<int> X(100, 1); // Binary map of the nodes in X
+    vector<int> X(2*bipartition, 1); // Binary map of the nodes in X
     while (1){
+        Graph H = Graph(nodes + 2, Graph::directed);
         for(NodeId i = 0; i < bipartition; i++){
-            H.add_edge(s, i);
-            H.add_edge(i + bipartition, t);
+            if (X[i] == 1) H.add_edge(s, i);
+            if (X[i+bipartition] == 1) H.add_edge(i + bipartition, t);
         }
         for(NodeId i = 0; i < bipartition; ++i){
             for(Neighbor node : graph.get_node(i).adjacent_nodes()){
-                vector<Neighbor> neighbors = M.get_node(i).adjacent_nodes();
-                if(std::any_of(neighbors.begin(), neighbors.end(), [node] (Neighbor neighbor) {
-                    return neighbor.id() == node.id();
-                })){
+                if(M[i] == node.id()){
                     H.add_edge(node.id(), i);
                 } else {
                     H.add_edge(i, node.id());
@@ -93,18 +90,13 @@ Graph bipartiteMatching(Graph graph){
         }
         auto path = shortestPath(H, s, t);
         if (path.empty()) return M;
-        Graph M_temp = Graph(nodes, Graph::undirected);
-
-        for(int i = 0; i < path.size() - 1; ++i){
-            vector<Neighbor> neighbors = M.get_node(path[i]).adjacent_nodes();
-            if(neighbors.empty() || !(neighbors[0].id() == path[i + 1]))
-                M_temp.add_edge(path[i], path[i+1]);
-        }
-        for(NodeId i = 0; i < bipartition; ++i){
-            if(M_temp.get_node(i).adjacent_nodes().empty()){
-                M_temp.add_edge(i, M.get_node(i).adjacent_nodes()[0].id());
+        for(int i = 1; i < path.size() - 2; ++i){
+            if(i%2 != 0){
+                M[path[i]] = path[i + 1];
+            } else {
+                M[path[i]] = -1;
             }
+            X[path[i]] = 0;
         }
-        M = M_temp;
     }
 }
