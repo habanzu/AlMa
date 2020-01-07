@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <set>
 #include <iostream>
+#include <numeric>
 
 typedef Graph::Neighbor Neighbor;
 using std::vector;
@@ -69,12 +70,10 @@ std::vector<NodeId> shortestPath(Graph graph, NodeId start, NodeId destination){
 };
 
 Graph bipartiteMatching(Graph graph){
-    NodeId nodes = graph.num_nodes();
-    NodeId bipartition = 3;
-    Graph M = Graph(nodes, Graph::undirected);
-    Graph H = Graph(nodes + 2, Graph::directed);
-    NodeId s = nodes;
-    NodeId t = nodes + 1;
+    NodeId nodes = graph.num_nodes(), bipartition = 3;
+    Graph M = Graph(nodes, Graph::undirected), H = Graph(nodes + 2, Graph::directed);
+    NodeId s = nodes, t = nodes + 1;
+    vector<int> X(100, 1); // Binary map of the nodes in X
     while (1){
         for(NodeId i = 0; i < bipartition; i++){
             H.add_edge(s, i);
@@ -93,11 +92,19 @@ Graph bipartiteMatching(Graph graph){
             }
         }
         auto path = shortestPath(H, s, t);
-        if (path.empty()){
-            std::cout << "Pfad ist leer \n";
-            return M;
-        } else {
-            std::cout << "Happy \n";
+        if (path.empty()) return M;
+        Graph M_temp = Graph(nodes, Graph::undirected);
+
+        for(int i = 0; i < path.size() - 1; ++i){
+            vector<Neighbor> neighbors = M.get_node(path[i]).adjacent_nodes();
+            if(neighbors.empty() || !(neighbors[0].id() == path[i + 1]))
+                M_temp.add_edge(path[i], path[i+1]);
         }
+        for(NodeId i = 0; i < bipartition; ++i){
+            if(M_temp.get_node(i).adjacent_nodes().empty()){
+                M_temp.add_edge(i, M.get_node(i).adjacent_nodes()[0].id());
+            }
+        }
+        M = M_temp;
     }
 }
