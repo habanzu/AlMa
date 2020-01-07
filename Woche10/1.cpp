@@ -2,7 +2,8 @@
 
 int main(){
     Graph graph("tutorien.txt", Graph::undirected);
+    //graph.print();
     Graph matching = bipartiteMatching(graph);
-    matching.print();
+    //matching.print();
     return 0;
 }
