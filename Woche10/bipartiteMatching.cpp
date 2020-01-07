@@ -68,9 +68,16 @@ std::vector<NodeId> shortestPath(Graph graph, NodeId start, NodeId destination){
     return path;
 };
 
+struct SearchNode{
+    NodeId id;
+    int operator() (Neighbor neighbor){
+        return neighbor.id() == this->id;
+    }
+};
+
 Graph bipartiteMatching(Graph graph){
     NodeId nodes = graph.num_nodes();
-    NodeId bipartition = 100;
+    NodeId bipartition = 3;
     Graph M = Graph(nodes, Graph::undirected);
     Graph H = Graph(nodes + 2, Graph::directed);
     NodeId s = nodes;
@@ -78,23 +85,21 @@ Graph bipartiteMatching(Graph graph){
     while (1){
         for(NodeId i = 0; i < bipartition; i++){
             H.add_edge(s, i);
-            H.add_edge(i + 100, t);
+            H.add_edge(i + bipartition, t);
         }
         for(NodeId i = 0; i < bipartition; ++i){
             for(Neighbor node : graph.get_node(i).adjacent_nodes()){
                 vector<Neighbor> neighbors = M.get_node(i).adjacent_nodes();
-                for(auto neighbor : neighbors){
-                    if(neighbor.id() == node.id()){
-                        H.add_edge(node.id(), i);
-                    } else{
-                        H.add_edge(i, node.id());
-                    }
+                if(std::any_of(neighbors.begin(), neighbors.end(), SearchNode{node.id()})){
+                    H.add_edge(node.id(), i);
+                } else {
+                    H.add_edge(i, node.id());
                 }
             }
         }
-        std::cout << "Happy \n";
         auto path = shortestPath(H, s, t);
         if (path.empty()){
+            std::cout << "Pfad ist leer \n";
             return M;
         } else {
             std::cout << "Happy \n";
