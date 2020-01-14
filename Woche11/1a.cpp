@@ -3,8 +3,9 @@
 #include <iostream>
 
 int main(){
-    vector<double> A{1,1,1,1,1,1};
+    vector<double> A{2,1,1,2,1,1};
     LUdecomposition LR(A, 2);
+    LR.LUdecomp();
     LR.print();
     return 0;
 }
